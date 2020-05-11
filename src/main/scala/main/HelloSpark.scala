@@ -4,30 +4,32 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object HelloSpark {
 
-  private def SampleTextPath = "/tmp/sample.txt"
+  private val sampleTextPath = "/tmp/sample.txt"
 
-  private def SampleCsvPath = "/tmp/sample.csv"
+  private val sampleCsvPath = "/tmp/sample.csv"
 
-  private def SampleParquetPath = "/tmp/sample.parquet"
+  private val sampleParquetPath = "/tmp/sample.parquet"
+
+  private def sampleRemoteText(bucketName: String) = s"s3a://$bucketName/sample.txt"
 
   private def readUnstructuredText(spark: SparkSession) = spark
     .read
-    .text(SampleTextPath)
+    .text(sampleTextPath)
 
   private def readCsv(spark: SparkSession) = spark
     .read
     .option("header", "true")
     .option("inferSchema", "true")
-    .csv(SampleCsvPath)
+    .csv(sampleCsvPath)
 
   private def readParquet(spark: SparkSession) = spark
     .read
     .option("inferSchema", "true")
-    .parquet(SampleParquetPath)
+    .parquet(sampleParquetPath)
 
   private def readRemoteText(spark: SparkSession, bucketName: String) = spark
     .read
-    .text(s"s3a://$bucketName/sample.txt")
+    .text(sampleRemoteText(bucketName))
 
   private def showSchemaAndRecords(dataFrame: DataFrame) {
     dataFrame.printSchema()
