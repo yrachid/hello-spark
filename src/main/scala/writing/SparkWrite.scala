@@ -15,6 +15,7 @@ object SparkWrite {
 
     weatherDf
       .write
+      .option("compression", "snappy")
       .parquet("/tmp/spark-parquet-output")
 
     weatherDf
