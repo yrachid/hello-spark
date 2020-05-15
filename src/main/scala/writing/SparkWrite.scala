@@ -15,13 +15,17 @@ object SparkWrite {
 
     weatherDf
       .write
-      .option("compression", "snappy")
+      .option("compression", "uncompressed")
       .parquet("/tmp/spark-parquet-output")
 
     weatherDf
       .write
       .option("header", "true")
       .csv("/tmp/spark-csv-output")
+
+    weatherDf.write.saveAsTable("weather_stuff")
+
+    session.sql("SELECT COUNT(date) FROM weather_stuff").show()
 
     session.stop()
   }
